@@ -1,5 +1,17 @@
+.all-area {
+    max-width: 500px;
+    margin: 0 auto;
+}
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 0 224px;
+}
+
+.li-item {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.task-text {
+    width: 150px;
 }
