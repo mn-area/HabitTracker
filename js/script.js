@@ -7,6 +7,20 @@ const taskstate = {
     gaming : false
 }
 
+const tasks = [
+    {
+        taskId : "reading",
+        completed : false
+    },
+    {
+        taskId : "studying",
+        completed : false
+    },
+    {
+        taskId : "gaming",
+        completed : false 
+    }
+]
 // ======================
 // 2. 定数
 // ======================
@@ -33,17 +47,15 @@ function changeTaskState(state) {
 
 // タスク完了状態LocalStrage保存
 function saveTaskState(task, state) {
-    localStorage.setItem(task, state)
+    localStorage.setItem("taskState", JSON.stringify(taskstate))
 } 
 
 // タスク完了状態取得
 function loadTask() {
-    const readingState = localStorage.getItem(reading);
-    const studyingState = localStorage.getItem(studying);
-    const gamingState = localStorage.getItem(gaming);
-    taskstate.reading = JSON.parse(readingState);
-    taskstate.studying = JSON.parse(studyingState);
-    taskstate.gaming = JSON.parse(gamingState);
+    const storageState = JSON.parse(localStorage.getItem("taskState")) ?? taskstate;
+    taskstate.reading = storageState.reading;
+    taskstate.studying = storageState.studying;
+    taskstate.gaming = storageState.gaming;
 }
 
 // 画面再描画処理
