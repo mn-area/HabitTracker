@@ -10,14 +10,17 @@ const taskstate = {
 const tasks = [
     {
         taskId : "reading",
+        text : "読書",
         completed : false
     },
     {
         taskId : "studying",
+        text : "勉強",
         completed : false
     },
     {
         taskId : "gaming",
+        text : "ゲーム",
         completed : false 
     }
 ]
@@ -58,48 +61,73 @@ function loadTask() {
     taskstate.gaming = storageState.gaming;
 }
 
+// 配列から登録済みタスクを描画
+function renderTask(tasks) {
+    const listArea = document.getElementById("card-area");
+
+    for (task in tasks) {
+        const li = document.createElement('li');
+        li.id = tasks[task].taskId;
+        li.className = "li-item";
+        li.innerHTML = `
+                <p class="task-text">${tasks[task].text}</p>
+                <button type="button" class="btn-task">
+                </button>
+            `;
+        listArea.appendChild(li);
+    }
+}
+
 // 画面再描画処理
-function render() {
-    readingButton.textContent = taskstate.reading ? "完了" : "完了する";
-    studyingButton.textContent = taskstate.studying ? "完了" : "完了する";
-    gamingButton.textContent = taskstate.gaming ? "完了" : "完了する";
+function render(tasks) {
+    for (task in tasks) {
+        const eleTask = document.getElementsByClassName('li-item');
+        const eleId = eleTask[task].id;
+        for (let i = 0; i <= eleTask.length; i++) {
+            if (eleId == tasks[task].taskId) {
+                document.getElementById(eleId).children[1].textContent = tasks[task].completed ? "完了" : "完了する";
+                break;
+            }
+        }
+    }
 }
 
 // ======================
 // 4. HTML要素取得
 // ======================
-const readingButton = document.getElementById("btn-reading");
-const studyingButton = document.getElementById("btn-studying");
-const gamingButton = document.getElementById("btn-gaming");
+// const readingButton = document.getElementById("btn-reading");
+// const studyingButton = document.getElementById("btn-studying");
+// const gamingButton = document.getElementById("btn-gaming");
 
-// ======================
-// 5. イベント登録
-// ======================
-readingButton.addEventListener("click", function()
-    {
-        changeTaskState(reading);
-        saveTaskState(reading, taskstate.reading);
-        render();
-    }
-);
-studyingButton.addEventListener("click", function()
-    {
-        changeTaskState(studying);
-        saveTaskState(studying, taskstate.studying);
-        render();
-    }
-);
-gamingButton.addEventListener("click", function()
-    {
-        changeTaskState("gaming");
-        saveTaskState(gaming, taskstate.gaming);
-        render();
-    }
-);
+// // ======================
+// // 5. イベント登録
+// // ======================
+// readingButton.addEventListener("click", function()
+//     {
+//         changeTaskState(reading);
+//         saveTaskState(reading, taskstate.reading);
+//         render();
+//     }
+// );
+// studyingButton.addEventListener("click", function()
+//     {
+//         changeTaskState(studying);
+//         saveTaskState(studying, taskstate.studying);
+//         render();
+//     }
+// );
+// gamingButton.addEventListener("click", function()
+//     {
+//         changeTaskState("gaming");
+//         saveTaskState(gaming, taskstate.gaming);
+//         render();
+//     }
+// );
 
 // ======================
 // 6. 初回実行
 // ======================
 document.getElementById("date").textContent = showDate;
 loadTask();
-render();
+renderTask(tasks);
+render(tasks);
