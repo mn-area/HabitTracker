@@ -33,7 +33,7 @@ const month = now.getMonth() + 1;
 const date = now.getDate();
 const day = now.getDay();
 const weekday = ["日","月","火","水","木","金","土"];
-const showDate = `${year}年${month}月${date}日${weekday[day]}曜日`;
+const showDate = `${year}年${month}月${date}日（${weekday[day]}）`;
 
 const reading = "reading";
 const studying = "studying";
@@ -44,13 +44,16 @@ const gaming = "gaming";
 // ======================
 
 // タスク完了状態変更処理 
-function changeTaskState(state) {
-    taskstate[state] = taskstate[state] ? false : true;
+function changeTaskState(taskId) {
+    const task = tasks.find(task => task.taskId == taskId);
+    if (task) {
+        task.completed = !task.completed;
+    }
 };
 
 // タスク完了状態LocalStrage保存
 function saveTaskState(task, state) {
-    localStorage.setItem("taskState", JSON.stringify(taskstate))
+    localStorage.setItem("taskState", JSON.stringify(tasks))
 } 
 
 // タスク完了状態取得
@@ -71,7 +74,7 @@ function renderTask(tasks) {
         li.className = "li-item";
         li.innerHTML = `
                 <p class="task-text">${tasks[task].text}</p>
-                <button type="button" class="btn-task">
+                <button type="button" class="btn-task" taskState=${tasks[task].completed}>
                 </button>
             `;
         listArea.appendChild(li);
@@ -99,30 +102,21 @@ function render(tasks) {
 // const studyingButton = document.getElementById("btn-studying");
 // const gamingButton = document.getElementById("btn-gaming");
 
-// // ======================
-// // 5. イベント登録
-// // ======================
-// readingButton.addEventListener("click", function()
-//     {
-//         changeTaskState(reading);
-//         saveTaskState(reading, taskstate.reading);
-//         render();
-//     }
-// );
-// studyingButton.addEventListener("click", function()
-//     {
-//         changeTaskState(studying);
-//         saveTaskState(studying, taskstate.studying);
-//         render();
-//     }
-// );
-// gamingButton.addEventListener("click", function()
-//     {
-//         changeTaskState("gaming");
-//         saveTaskState(gaming, taskstate.gaming);
-//         render();
-//     }
-// );
+// ======================
+// 5. イベント登録
+// ======================
+window.addEventListener('DOMContentLoaded', ()=> {
+    document.querySelectorAll('.btn-task').forEach(x=> {
+        x.addEventListener('click', e=> {
+            const taskId = x.parentNode.id;
+            const taskState = x.getAttribute('taskState');
+            console.log(taskState)
+            changeTaskState(taskId);
+            saveTaskState(taskId, taskState);
+            render(tasks);
+        });
+    });
+});
 
 // ======================
 // 6. 初回実行
