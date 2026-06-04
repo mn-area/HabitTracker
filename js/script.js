@@ -1,29 +1,37 @@
 // ======================
 // 1. 状態
 // ======================
-const taskstate = {
-    reading : false,
-    studying : false,
-    gaming : false
-}
-
-const tasks = [
+const tasks2 = [
     {
         taskId : "reading",
         text : "読書",
-        completed : false
+        completed : false,
+        state: {
+            '2026/6/4' : true,
+            '2026/6/5' : true
+        }
     },
     {
         taskId : "studying",
         text : "勉強",
-        completed : false
+        completed : false,
+        state: {
+            '2026/6/4' : false,
+            '2026/6/5' : true
+        }
     },
     {
         taskId : "gaming",
         text : "ゲーム",
-        completed : false 
+        completed : false,
+        state: {
+            '2026/6/4' : false,
+            '2026/6/5' : true
+        }
     }
 ]
+const tasks = JSON.parse(localStorage.getItem("taskState")) ?? tasks2;
+
 // ======================
 // 2. 定数
 // ======================
@@ -34,10 +42,7 @@ const date = now.getDate();
 const day = now.getDay();
 const weekday = ["日","月","火","水","木","金","土"];
 const showDate = `${year}年${month}月${date}日（${weekday[day]}）`;
-
-const reading = "reading";
-const studying = "studying";
-const gaming = "gaming";
+const today = year + "/" + month  + "/" + date
 
 // ======================
 // 3. 関数
@@ -47,22 +52,14 @@ const gaming = "gaming";
 function changeTaskState(taskId) {
     const task = tasks.find(task => task.taskId == taskId);
     if (task) {
-        task.completed = !task.completed;
+        task.state[today] = !task.state[today];
     }
 };
 
 // タスク完了状態LocalStrage保存
-function saveTaskState(task, state) {
+function saveTaskState() {
     localStorage.setItem("taskState", JSON.stringify(tasks))
 } 
-
-// タスク完了状態取得
-function loadTask() {
-    const storageState = JSON.parse(localStorage.getItem("taskState")) ?? taskstate;
-    taskstate.reading = storageState.reading;
-    taskstate.studying = storageState.studying;
-    taskstate.gaming = storageState.gaming;
-}
 
 // 配列から登録済みタスクを描画
 function renderTask(tasks) {
@@ -74,7 +71,7 @@ function renderTask(tasks) {
         li.className = "li-item";
         li.innerHTML = `
                 <p class="task-text">${tasks[task].text}</p>
-                <button type="button" class="btn-task" taskState=${tasks[task].completed}>
+                <button type="button" class="btn-task" taskState=${tasks[task].state[today]}>
                 </button>
             `;
         listArea.appendChild(li);
@@ -88,7 +85,7 @@ function render(tasks) {
         const eleId = eleTask[task].id;
         for (let i = 0; i <= eleTask.length; i++) {
             if (eleId == tasks[task].taskId) {
-                document.getElementById(eleId).children[1].textContent = tasks[task].completed ? "完了" : "完了する";
+                document.getElementById(eleId).children[1].textContent = tasks[task].state[today] ? "完了" : "完了する";
                 break;
             }
         }
@@ -98,9 +95,6 @@ function render(tasks) {
 // ======================
 // 4. HTML要素取得
 // ======================
-// const readingButton = document.getElementById("btn-reading");
-// const studyingButton = document.getElementById("btn-studying");
-// const gamingButton = document.getElementById("btn-gaming");
 
 // ======================
 // 5. イベント登録
@@ -110,7 +104,6 @@ window.addEventListener('DOMContentLoaded', ()=> {
         x.addEventListener('click', e=> {
             const taskId = x.parentNode.id;
             const taskState = x.getAttribute('taskState');
-            console.log(taskState)
             changeTaskState(taskId);
             saveTaskState(taskId, taskState);
             render(tasks);
@@ -122,6 +115,5 @@ window.addEventListener('DOMContentLoaded', ()=> {
 // 6. 初回実行
 // ======================
 document.getElementById("date").textContent = showDate;
-loadTask();
 renderTask(tasks);
 render(tasks);
