@@ -14,11 +14,29 @@
     </header>
     <div class="all-area">
         <p class="habit-text">今日の習慣</p>
+        <div class="input-area">
+            <input type="button" id="inputTaskBtn" value="新しい習慣を追加する">
+        </div>
         <div class="task-area">
-            <ul id="card-area" style="list-style: none;">
+            <ul id="card-area" style="list-style: none; padding-inline-start: 0;">
             </ul>
         </div>
     </div>
+    <dialog id="addTaskDialogBtn">
+        <h2>習慣の追加</h2>
+        <p>
+            習慣ID:<br>
+            <input type="text" id="taskIdText"><br>
+            <p>半角英数字・ハイフン・アンダースコアが使用できます</p>
+        </p>
+        <p>
+            習慣名:<br>
+            <input type="text" id="taskNameText" ><br>
+            <p>習慣名を入力して下さい</p>
+        </p>
+        <button id="closeDialogBtn">キャンセル</button>
+        <button id="addTaskBtn">追加する</button>
+    </dialog>
     <script src="js/script.js"></script>
 </body>
 </html>

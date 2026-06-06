@@ -3,29 +3,10 @@
 // ======================
 const tasks2 = [
     {
-        taskId : "reading",
-        text : "読書",
-        completed : false,
+        taskId : "sample",
+        text : "sample",
         state: {
             '2026/6/4' : true,
-            '2026/6/5' : true
-        }
-    },
-    {
-        taskId : "studying",
-        text : "勉強",
-        completed : false,
-        state: {
-            '2026/6/4' : false,
-            '2026/6/5' : true
-        }
-    },
-    {
-        taskId : "gaming",
-        text : "ゲーム",
-        completed : false,
-        state: {
-            '2026/6/4' : false,
             '2026/6/5' : true
         }
     }
@@ -58,7 +39,7 @@ function changeTaskState(taskId) {
 
 // タスク完了状態LocalStrage保存
 function saveTaskState() {
-    localStorage.setItem("taskState", JSON.stringify(tasks))
+    localStorage.setItem("taskState", JSON.stringify(tasks));
 } 
 
 // 配列から登録済みタスクを描画
@@ -95,20 +76,51 @@ function render(tasks) {
 // ======================
 // 4. HTML要素取得
 // ======================
+const inputTaskBtn = document.getElementById('inputTaskBtn');
+const taskDialog = document.getElementById('addTaskDialogBtn');
+const closeDialog = document.getElementById('closeDialogBtn');
+const addTask = document.getElementById('addTaskBtn');
+const taskIdText = document.getElementById('taskIdText');
+const taskNameText = document.getElementById('taskNameText');
 
 // ======================
 // 5. イベント登録
 // ======================
+// タスク完了ボタン
 window.addEventListener('DOMContentLoaded', ()=> {
     document.querySelectorAll('.btn-task').forEach(x=> {
         x.addEventListener('click', e=> {
             const taskId = x.parentNode.id;
             const taskState = x.getAttribute('taskState');
             changeTaskState(taskId);
-            saveTaskState(taskId, taskState);
+            saveTaskState();
             render(tasks);
         });
     });
+});
+
+// タスク追加ボタン
+inputTaskBtn.addEventListener('click', () => {
+    taskDialog.showModal();
+});
+
+closeDialog.addEventListener('click', () =>{
+    taskDialog.close();
+});
+
+addTask.addEventListener('click', () => {
+    const taskId = document.getElementById('taskIdText').value;
+    const taskName = document.getElementById('taskNameText').value;
+    const inputTask = {
+        taskId : taskId,
+        text : taskName,
+        state: {
+        }
+    }
+    tasks.push(inputTask);
+    saveTaskState();
+    alert("習慣の追加が完了しました。");
+    taskDialog.close();
 });
 
 // ======================

@@ -45,3 +45,7 @@ body {
     margin: 25px 10px;
     height: 30px;
 }
+
+#inputTaskBtn {
+    width: 100%;
+}
