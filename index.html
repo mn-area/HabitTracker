@@ -22,20 +22,27 @@
             </ul>
         </div>
     </div>
-    <dialog id="addTaskDialogBtn">
+    <dialog id="TaskDialog">
         <h2>習慣の追加</h2>
         <p>
             習慣ID:<br>
-            <input type="text" id="taskIdText"><br>
+            <input type="text" id="taskIdText" required><br>
             <p>半角英数字・ハイフン・アンダースコアが使用できます</p>
         </p>
         <p>
             習慣名:<br>
-            <input type="text" id="taskNameText" ><br>
+            <input type="text" id="taskNameText" required><br>
             <p>習慣名を入力して下さい</p>
         </p>
         <button id="closeDialogBtn">キャンセル</button>
         <button id="addTaskBtn">追加する</button>
+        <button id="editTaskBtn" hidden>更新する</button>
+    </dialog>
+    <dialog id="DeleteDialog">
+        <h2>この習慣を削除しますか？</h2>
+        <p></p>
+        <button id="closeDeleteDialogBtn">キャンセル</button>
+        <button id="deleteTaskBtn">削除する</button>
     </dialog>
     <script src="js/script.js"></script>
 </body>

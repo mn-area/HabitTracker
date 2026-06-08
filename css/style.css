@@ -25,6 +25,10 @@ body {
     padding: 10px 10px;
 }
 
+.li-item > :first-child {
+    margin-right: auto;
+}
+
 .task-text {
     width: 150px;
 }
@@ -48,4 +52,8 @@ body {
 
 #inputTaskBtn {
     width: 100%;
+}
+
+.taskcontroll {
+    margin-right: 10px;
 }
