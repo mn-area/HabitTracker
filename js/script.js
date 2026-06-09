@@ -24,7 +24,7 @@ const day = now.getDay();
 const weekday = ["日","月","火","水","木","金","土"];
 const showDate = `${year}年${month}月${date}日（${weekday[day]}）`;
 const today = year + "/" + month  + "/" + date
-var deleteTaskId = "";
+var editTaskId = "";
 
 // ======================
 // 3. 関数
@@ -63,7 +63,7 @@ function renderTask(tasks) {
         li.innerHTML = `
                 <p class="task-text">${tasks[task].text}</p>
                 <button type="button" class="btn-task taskcontroll" taskState=${tasks[task].state[today]}></button>
-                <button type="button" class="edit taskcontroll">
+                <button type="button" class="btn-edit taskcontroll">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                     <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
                     </svg>
@@ -100,6 +100,7 @@ const inputTaskBtn = document.getElementById('inputTaskBtn');
 const taskDialog = document.getElementById('TaskDialog');
 const closeDialog = document.getElementById('closeDialogBtn');
 const addTask = document.getElementById('addTaskBtn');
+const editTaskBtn = document.getElementById('editTaskBtn');
 const taskIdText = document.getElementById('taskIdText');
 const taskNameText = document.getElementById('taskNameText');
 const deleteDialog = document.getElementById('DeleteDialog');
@@ -132,11 +133,31 @@ window.addEventListener('DOMContentLoaded', ()=> {
     });
 });
 
+
+// 鉛筆ボタン
+window.addEventListener('DOMContentLoaded', ()=> {
+    document.querySelectorAll('.btn-edit').forEach(x=> {
+        x.addEventListener('click', e=> {
+            if (e.target.classList.contains('btn-edit')) {
+                const li = e.target.closest('li');
+                const taskText = li.querySelector('.task-text').textContent;
+                editTaskId = x.parentNode.id;
+                taskIdText.value = editTaskId;
+                taskNameText.value = taskText 
+                taskDialog.showModal();
+                taskIdText.setAttribute("disabled", true);
+                addTask.style.display = 'none';
+                editTaskBtn.style.display = 'inline';
+            }
+        });
+    });
+});
+
 // ゴミ箱ボタン
 window.addEventListener('DOMContentLoaded', ()=> {
     document.querySelectorAll('.btn-trash').forEach(x=> {
         x.addEventListener('click', e=> {
-            deleteTaskId = x.parentNode.id;
+            editTaskId = x.parentNode.id;
             deleteDialog.showModal();
         });
     });
@@ -146,7 +167,7 @@ window.addEventListener('DOMContentLoaded', ()=> {
 // タスク削除ボタン
 deleteTaskBtn.addEventListener('click', () =>{
     if (tasks.some(task => task.taskId == "reading")) {
-        deleteTask(deleteTaskId);
+        deleteTask(editTaskId);
     }
 });
 
@@ -160,7 +181,6 @@ addTask.addEventListener('click', () => {
     const taskId = document.getElementById('taskIdText').value;
     const taskName = document.getElementById('taskNameText').value;
     
-
     if (taskId == null || taskId == undefined || taskId == "") {
         alert("タスクIDを入力して下さい。");
         return;
@@ -188,6 +208,28 @@ addTask.addEventListener('click', () => {
     }
 });
 
+// タスク更新ボタン
+editTaskBtn.addEventListener('click', () => { 
+    const taskId = document.getElementById('taskIdText').value;
+    const taskName = document.getElementById('taskNameText').value;
+
+    if (taskId == null || taskId == undefined || taskId == "") {
+        alert("タスクIDを入力して下さい。");
+        return;
+    } else if ( taskName  == null || taskName == undefined || taskName == "") {
+        alert("タスク名を入力してください。");
+        return;
+    } else {
+        const index = tasks.findIndex(task => task.taskId == taskId);
+        tasks[index].text = taskName;
+        saveTaskState();
+        alert("習慣の更新が完了しました。");
+        taskDialog.close();
+        renderTask(tasks);
+        render(tasks);
+    }
+
+});
 // ======================
 // 6. 初回実行
 // ======================
