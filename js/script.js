@@ -166,7 +166,7 @@ window.addEventListener('DOMContentLoaded', ()=> {
 
 // タスク削除ボタン
 deleteTaskBtn.addEventListener('click', () =>{
-    if (tasks.some(task => task.taskId == "reading")) {
+    if (tasks.some(task => task.taskId == editTaskId)) {
         deleteTask(editTaskId);
     }
 });
