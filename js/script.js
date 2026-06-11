@@ -49,6 +49,7 @@ function deleteTask(taskId) {
     alert("削除が完了しました。");
     deleteDialog.close();
     renderTask(tasks);
+    render(tasks);
 }
 
 // 配列から登録済みタスクを描画
@@ -106,6 +107,7 @@ const taskNameText = document.getElementById('taskNameText');
 const deleteDialog = document.getElementById('DeleteDialog');
 const closeDeleteDialogBtn = document.getElementById('closeDeleteDialogBtn');
 const deleteTaskBtn = document.getElementById('deleteTaskBtn');
+const cardArea = document.getElementById('card-area');
 
 // ======================
 // 5. イベント登録
@@ -120,49 +122,6 @@ inputTaskBtn.addEventListener('click', () => {
 closeDialog.addEventListener('click', () =>{
     taskDialog.close();
 });
-
-// タスク完了ボタン
-window.addEventListener('DOMContentLoaded', ()=> {
-    document.querySelectorAll('.btn-task').forEach(x=> {
-        x.addEventListener('click', e=> {
-            const taskId = x.parentNode.id;
-            changeTaskState(taskId);
-            saveTaskState();
-            render(tasks);
-        });
-    });
-});
-
-
-// 鉛筆ボタン
-window.addEventListener('DOMContentLoaded', ()=> {
-    document.querySelectorAll('.btn-edit').forEach(x=> {
-        x.addEventListener('click', e=> {
-            if (e.target.classList.contains('btn-edit')) {
-                const li = e.target.closest('li');
-                const taskText = li.querySelector('.task-text').textContent;
-                editTaskId = x.parentNode.id;
-                taskIdText.value = editTaskId;
-                taskNameText.value = taskText 
-                taskDialog.showModal();
-                taskIdText.setAttribute("disabled", true);
-                addTask.style.display = 'none';
-                editTaskBtn.style.display = 'inline';
-            }
-        });
-    });
-});
-
-// ゴミ箱ボタン
-window.addEventListener('DOMContentLoaded', ()=> {
-    document.querySelectorAll('.btn-trash').forEach(x=> {
-        x.addEventListener('click', e=> {
-            editTaskId = x.parentNode.id;
-            deleteDialog.showModal();
-        });
-    });
-});
-
 
 // タスク削除ボタン
 deleteTaskBtn.addEventListener('click', () =>{
@@ -229,6 +188,30 @@ editTaskBtn.addEventListener('click', () => {
         render(tasks);
     }
 
+});
+
+// 操作ボタンエリア
+cardArea.addEventListener('click', (e) => {
+    const taskId = e.target.closest('li').id;
+    if (e.target.classList.contains('btn-task')) {
+        changeTaskState(taskId);
+        saveTaskState();
+        renderTask(tasks);
+        render(tasks);
+    } else if (e.target.classList.contains('btn-edit')) {
+        const li = e.target.closest('li');
+        const taskText = li.querySelector('.task-text').textContent;
+
+        taskIdText.value = taskId;
+        taskNameText.value = taskText
+        taskDialog.showModal();
+        taskIdText.setAttribute("disabled", true);
+        addTask.style.display = 'none';
+        editTaskBtn.style.display = 'inline';
+    } else if (e.target.classList.contains('btn-trash')) {
+        editTaskId = taskId
+        deleteDialog.showModal();
+    }
 });
 // ======================
 // 6. 初回実行
