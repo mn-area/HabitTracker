@@ -53,25 +53,69 @@ body {
 
 #inputTaskBtn {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
     border: 2px dotted #34c510;
     border-radius: 10px;
     background: transparent;
     padding: 10px;
     justify-self: flex-start;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
 }
 
-.hoge {
+#inputTaskBtn:hover {
+    background: #ffffff;
+}
+
+#inputTaskBtn:active {
+    background: #bdbdbd;
+}
+
+.plus {
     color: #34c510;
+}
+
+.trash {
+    color: red;
 }
 
 .taskcontroll {
     margin-right: 10px;
+    background: transparent;
 }
 
+.btn-edit {
+    border: none;
+    padding: 10px ;
+}
+
+.btn-trash {
+    border: none;
+    padding: 10px ;
+    background: transparent;
+}
 .habit-text {
     padding: 0.4rem;
     border-left: 5px solid #34c510;
+}
+
+#addTaskBtn {
+    border: none;
+    background-color: #34c510;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+#editTaskBtn {
+    border: none;
+    background-color: #34c510;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+#deleteTaskBtn {
+    border: none;
+    background-color: red;
+    border-radius: 5px;
+    color: #ffffff;
 }
