@@ -1,0 +1,25 @@
+{
+  "name": "habittracker",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/mn-area/HabitTracker#readme",
+  "bugs": {
+    "url": "https://github.com/mn-area/HabitTracker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mn-area/HabitTracker.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0"
+  }
+}
